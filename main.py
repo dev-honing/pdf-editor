@@ -33,7 +33,7 @@ def select_file_or_directory(path):
     # 폴더 또는 파일을 선택하는 질문 생성
     questions = [
         inquirer.List('selected_item',
-                      message="원본 PDF 파일의 탐색을 위해, 폴더나 파일을 선택하세요.",
+                      message=f"{Fore.GREEN}원본 PDF 파일의 탐색을 위해, 폴더나 파일을 선택하세요.",
                       choices=items),
     ]
     answers = inquirer.prompt(questions)
@@ -49,19 +49,19 @@ def select_file_or_directory(path):
 if __name__ == "__main__":    
     # Input/ 폴더가 있으면 다음 순서로 진행
     if os.path.exists('./Input/'):
-        print("Input/ 폴더가 이미 있습니다.")
+        print(f"[{Fore.YELLOW}!{Style.RESET_ALL}] {Fore.BLUE}Input/ 폴더가 이미 있습니다.{Style.RESET_ALL}")
     
     # Input/ 폴더가 없으면 새로 생성
     if not os.path.exists('./Input/'):
-        print("Input/ 폴더를 찾지 못해, 새로 생성했습니다.")
+        print(f"[{Fore.YELLOW}!{Style.RESET_ALL}] {Fore.BLUE}Input/ 폴더를 찾지 못해, 새로 생성했습니다.{Style.RESET_ALL}")
         os.makedirs('./Input/')
     
     # 사용자에게 안내 메시지 출력
-    print("\n편집할 PDF 파일을 Input/ 하위에 복사하세요. \n완료하고 Enter를 누르면 다음으로 이동합니다.")
+    print(f"\n{Fore.GREEN}편집할 PDF 파일을 Input/ 하위에 복사하세요.{Style.RESET_ALL} \n완료하고 Enter를 누르면 다음으로 이동합니다.")
     input() # 사용자가 Enter 키를 누를 때까지 대기
     
     input_pdf_path = select_file_or_directory('./Input/')
-    output_pdf_file = input(f"[{Fore.YELLOW}?{Style.RESET_ALL}] 저장할 PDF 파일의 이름을 입력하세요: ")
+    output_pdf_file = input(f"[{Fore.YELLOW}?{Style.RESET_ALL}] {Fore.GREEN}저장할 PDF 파일의 이름을 입력하세요: {Style.RESET_ALL}")
 
     # 사용자가 입력한 파일 이름에 .pdf 확장자가 없으면 자동으로 추가
     if not output_pdf_file.endswith('.pdf'):
@@ -69,4 +69,5 @@ if __name__ == "__main__":
     
     output_pdf_path = "./Output/" + output_pdf_file
 
+    print(f"{Fore.BLUE}PDF 파일 편집완료!{Style.RESET_ALL} \n편집된 파일: {Fore.CYAN}{output_pdf_path}{Style.RESET_ALL}로 저장을 완료했습니다.")
     extract_odd_pages(input_pdf_path, output_pdf_path)
