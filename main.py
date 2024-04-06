@@ -46,7 +46,20 @@ def select_file_or_directory(path):
     else:
         return select_file_or_directory(selected_item)
 
-if __name__ == "__main__":
+if __name__ == "__main__":    
+    # Input/ 폴더가 있으면 다음 순서로 진행
+    if os.path.exists('./Input/'):
+        print("Input/ 폴더가 이미 있습니다.")
+    
+    # Input/ 폴더가 없으면 새로 생성
+    if not os.path.exists('./Input/'):
+        print("Input/ 폴더를 찾지 못해, 새로 생성했습니다.")
+        os.makedirs('./Input/')
+    
+    # 사용자에게 안내 메시지 출력
+    print("\n편집할 PDF 파일을 Input/ 하위에 복사하세요. \n완료하고 Enter를 누르면 다음으로 이동합니다.")
+    input() # 사용자가 Enter 키를 누를 때까지 대기
+    
     input_pdf_path = select_file_or_directory('./Input/')
     output_pdf_file = input(f"[{Fore.YELLOW}?{Style.RESET_ALL}] 저장할 PDF 파일의 이름을 입력하세요: ")
 
