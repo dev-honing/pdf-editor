@@ -42,6 +42,10 @@ def select_file_or_directory(path):
     # 선택된 항목이 .pdf 파일이면 해당 파일의 경로를 반환
     if os.path.isfile(selected_item) and selected_item.endswith('.pdf'):
         return selected_item
+    # 선택된 항목이 .pdf 파일이 아니면 에러 메시지를 출력하고 다시 파일 또는 폴더를 선택
+    elif os.path.isfile(selected_item):
+        print(f"{Fore.RED}선택된 파일이 PDF 파일이 아닙니다!{Style.RESET_ALL} \n{Fore.MAGENTA}PDF 파일을 선택해 주세요.{Style.RESET_ALL}\n")
+        return select_file_or_directory(os.path.dirname(selected_item))
     # 선택된 항목이 폴더이면 해당 폴더 내에서 다시 폴더 또는 파일을 선택
     else:
         return select_file_or_directory(selected_item)
