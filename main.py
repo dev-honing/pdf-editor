@@ -17,17 +17,36 @@ def extract_odd_pages(input_pdf_path, output_pdf_path):
         with open(output_pdf_path, 'wb') as output_file:
             writer.write(output_file)
 
-if __name__ == "__main__":
-    files = os.listdir('./Input/')
+# 폴더 또는 파일을 선택하는 함수
+def select_file_or_directory(path):
+    items = os.listdir(path) # 현재 경로의 폴더 또는 파일 목록을 가져오기    
+    
+    # 각 항목의 전체 경로를 생성
+    items = [os.path.join(path, item) for item in items]
+    items.append('..') # 상위 폴더로 이동하기 위한 항목 추가
+    
+    # 폴더 또는 파일을 선택하는 질문 생성
     questions = [
-        inquirer.List('input_pdf_file',
-                      message="추출할 PDF 파일을 선택하세요.",
-                      choices=files),
-        inquirer.Text('output_pdf_file', message="추출된 PDF 파일의 이름을 입력하세요.")
+        inquirer.List('selected_item',
+                      message="원본 PDF 파일의 탐색을 위해, 폴더나 파일을 선택하세요.",
+                      choices=items),
     ]
     answers = inquirer.prompt(questions)
+    selected_item = answers['selected_item']
+    
+    # 선택된 항목이 .pdf 파일이면 해당 파일의 경로를 반환
+    if os.path.isfile(selected_item) and selected_item.endswith('.pdf'):
+        return selected_item
+    # 선택된 항목이 폴더이면 해당 폴더 내에서 다시 폴더 또는 파일을 선택
+    else:
+        return select_file_or_directory(selected_item)
 
-    input_pdf_path = "./Input/" + answers['input_pdf_file']
-    output_pdf_path = "./Output/" + answers['output_pdf_file']
+if __name__ == "__main__":
+    input_pdf_path = select_file_or_directory('./Input/')
+    output_pdf_file_question = [
+        inquirer.Text('output_pdf_file', message="저장할 PDF 파일의 이름을 입력하세요.")
+    ]
+    output_pdf_file_answer = inquirer.prompt(output_pdf_file_question)
+    output_pdf_path = "./Output/" + output_pdf_file_answer['output_pdf_file']
 
     extract_odd_pages(input_pdf_path, output_pdf_path)
