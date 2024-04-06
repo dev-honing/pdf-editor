@@ -47,15 +47,12 @@ def select_file_or_directory(path):
 
 if __name__ == "__main__":
     input_pdf_path = select_file_or_directory('./Input/')
-    output_pdf_file_question = [
-        inquirer.Text('output_pdf_file', message="저장할 PDF 파일의 이름을 입력하세요.")
-    ]
-    output_pdf_file_answer = inquirer.prompt(output_pdf_file_question)
-    output_pdf_file = output_pdf_file_answer['output_pdf_file']
-    
+    output_pdf_file = input("저장할 PDF 파일의 이름을 입력하세요: ")
+
     # 사용자가 입력한 파일 이름에 .pdf 확장자가 없으면 자동으로 추가
     if not output_pdf_file.endswith('.pdf'):
-            output_pdf_file += '.pdf'
+        output_pdf_file += '.pdf'
+    
     output_pdf_path = "./Output/" + output_pdf_file
 
     extract_odd_pages(input_pdf_path, output_pdf_path)
