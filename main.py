@@ -13,6 +13,10 @@ def extract_odd_pages(input_pdf_path, output_pdf_path):
         num_pages = len(reader.pages)  # PDF 파일의 총 페이지 수
         for page_num in range(0, num_pages, 2):  # 홀수 페이지만 추출
             writer.add_page(reader.pages[page_num])
+            
+        # Output/ 폴더가 없으면 새로 생성
+        if not os.path.exists(os.path.dirname(output_pdf_path)):
+            os.makedirs(os.path.dirname(output_pdf_path))
 
         with open(output_pdf_path, 'wb') as output_file:
             writer.write(output_file)
